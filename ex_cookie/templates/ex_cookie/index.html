@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+</head>
+<body>
+    <h1>Cookie 실습 메인</h1>
+    <ul>
+        {% for cookie in cookies %}
+            <li>쿠키: {{cookie}}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <a href="{% url "ex_cookie:sc" %}">세션 쿠키 확인</a><br>
+    <a href="{% url "ex_cookie:pc" %}">영구 쿠키 확인</a><br>
+    <a href="{% url "ex_cookie:login" %}">로그인</a><br>
+</body>
+</html>

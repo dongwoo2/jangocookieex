@@ -1,0 +1,8 @@
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="id"><br>
+    <input type="password" name="pw"><br>
+    <input type="checkbox" name="remember" value="1">
+    아이디 기억하기
+    <input type="submit" value="로그인">
+</form>
