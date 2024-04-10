@@ -4,7 +4,10 @@ from django.utils import timezone
 # Create your views here.
 
 def index(request):
-    print(request.COOKIES)
+    print(request.COOKIES) # 쿠키 확인
+    print(request.session) # 세션 확인
+    print(request.session.session_key) # 세션 아이디(키) 확인 세션은 클라이언트를 구분하기 위해 사용
+    request.session['now'] = 'value' # input('now 입력:')
     return render(request, 'ex_cookie/index.html', {'cookies':request.COOKIES})
 
 
@@ -32,7 +35,8 @@ def permanent_cookie(request):
 
 def login(request):
     if request.method == 'GET':
-        return render(request,'ex_cookie/login.html')
+        remember_id = request.COOKIES.get('id','')
+        return render(request,'ex_cookie/login.html', {'remember_id': remember_id})
     else:
         id = request.POST['id']
         pw = request.POST['pw']
@@ -40,6 +44,19 @@ def login(request):
         remember = request.POST.get('remember','') # 없을 때는 '' 값으로 나오게 함수를 이용하면 오류 해결
         response = HttpResponse('로그인 성공!')
         if id == pw:
+            # 로그인 성공 시 remember를 확인
+            request.session['login_user'] = id # ID를 세션에 저장
+            if remember == '':
+                response.delete_cookie('id')
+            else:
+                response.set_cookie('id',id, max_age=60*60)
             return response
         else:
             return render(request,'ex_cookie/login.html')
+        
+from django.shortcuts import redirect, reverse
+        
+def logout(request):
+    request.session.flush()
+    response = redirect(reverse('ex_cookie:index'))
+    return response

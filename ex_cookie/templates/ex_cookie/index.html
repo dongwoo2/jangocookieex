@@ -7,6 +7,14 @@
 </head>
 <body>
     <h1>Cookie 실습 메인</h1>
+    <p>sessionid:{{ request.session.session_key }}</p>
+    <p>로그인 상태: 
+        {% if request.session.login_user %}
+            {{ request.session.login_user }}
+            <a href={% url "ex_cookie:logout" %}>로그아웃</a>
+        {% endif %}
+        {{ request.session.login_user }}
+    </p>
     <ul>
         {% for cookie in cookies %}
             <li>쿠키: {{cookie}}</li>
